@@ -20,21 +20,25 @@
         @if(loggedIn){
             <div class="dropdown">
                 <a class="dropdown-toggle text-light">Welcome user</a>
-                <div  class="nav-item">
-
+                <div  class="dropdown-menu">
                     <a class="dropdown-item">Edit profile</a>
                     <a class="dropdown-item" (click)="logout()">Logout</a>
-
                 </div>
             </div>
         }
       @if(!loggedIn )
       {
-
         <form #loginForm="ngForm" (ngSubmit)="login()" class="d-flex " autocomplete="off ">
-            <input name="username" [(ngModel)]="model.Username" class="form-control me-2 " placeholder="Username ">
-            <input name="password" [(ngModel)]="model.password" class="form-control me-2 " placeholder="Password " type="password ">
-            <button class="btn btn-outline-success " type="submit ">Login</button>
+            <input name="username" 
+            [(ngModel)]="model.Username" 
+            class="form-control me-2 "
+             placeholder="Username">
+
+            <input name="password" 
+            [(ngModel)]="model.password" 
+            class="form-control me-2 " 
+            placeholder="Password" type="password">
+            <button class="btn btn-outline-success" type="submit ">Login</button>
         </form>
       }
 
