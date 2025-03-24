@@ -11,6 +11,7 @@ import { NgxSpinnerComponent } from 'ngx-spinner';
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',
     imports: [RouterOutlet, NavComponent, HomeComponent, NgxSpinnerComponent]
+
 })
 export class AppComponent implements OnInit {
 
