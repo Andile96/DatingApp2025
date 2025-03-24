@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { Developer } from '../_models/developer';
 
 @Component({
-  selector: 'app-contact-us',
-  standalone: true,
+    selector: 'app-contact-us',
+    standalone: true,
   imports: [],
-  templateUrl: './contact-us.component.html',
-  styleUrl: './contact-us.component.css'
+    templateUrl: './contact-us.component.html',
+    styleUrl: './contact-us.component.css'
 })
 export class ContactUsComponent {
 
