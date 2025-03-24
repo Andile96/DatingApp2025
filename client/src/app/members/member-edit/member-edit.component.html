@@ -5,11 +5,14 @@
             <h1>Your profile</h1>
         </div>
         <div class="col-8">
-            <div class="alert alert-info">
-                <p><strong>Information: </strong>
-                    You have made changes. Any unsaved changes will be lost.
-                </p>
-            </div>
+            @if(editForm.dirty)
+            {
+                <div class="alert alert-info pd-0">
+                    <p><strong>Information: </strong>
+                        You have made changes. Any unsaved changes will be lost.
+                    </p>
+                </div>
+            }
         </div>
         <div class="col-4">
             <div class="card">
@@ -33,8 +36,12 @@
                         <p>{{member.created}}</p>
                     </div>
                 </div>
+                
                 <div class="card-footer">
-                    <button form="editForm" class="btn btn-success col-12">Save Changes</button>
+                    <button 
+                    [disabled]="!editForm.dirty"
+                    form="editForm" 
+                    class="btn btn-success col-12">Save Changes</button>
                 </div>
             </div>
         </div>
