@@ -3,7 +3,7 @@
         <div class="col-4">
             <div class="card">
                 <img 
-                    src="{{member.photoUrl || './public/user.png'}}" 
+                    src="{{member.photoUrl || './assets/user.png'}}" 
                     alt="{{member.knownAs}}"
                     class="card-img-top img-thumbnail">
                 <div class="card-body">
@@ -48,7 +48,7 @@
                     @if(photoTab.active) {
                         <gallery 
                             [items]="images" 
-                            [thumbs]="true" 
+                            [itemAutosize]="true" 
                             class="gallery">
                         </gallery>
                     }
