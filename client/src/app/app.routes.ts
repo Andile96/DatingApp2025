@@ -11,6 +11,7 @@ import { ServerErrorComponent } from './errors/server-error/server-error.compone
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { preventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
+import { memberDetailedResolver } from './_resolver/member-detailed.resolver';
 
 export const routes: Routes = [
     {path:'',component: HomeComponent},
@@ -21,7 +22,8 @@ export const routes: Routes = [
         children: [
 
             {path:'members',component: MemberListComponent},
-            {path:'members/:username',component: MemberDetailComponent},
+            {path:'members/:username',component: MemberDetailComponent, 
+                resolve:{member:memberDetailedResolver}},
             {path:'lists',component: ListsComponent},
             {path: 'member/edit', component: MemberEditComponent, canDeactivate: [preventUnsavedChangesGuard]},
             {path:'messages',component: MessagesComponent},
