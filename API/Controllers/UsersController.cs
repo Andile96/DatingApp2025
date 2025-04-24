@@ -16,6 +16,7 @@ namespace API.Controllers
     public class UsersController(IUserRepository userRepository,IMapper mapper, 
     IPhotoService photoService) : BaseApiController
     {
+      
         [HttpGet]  // api/users
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
         {
@@ -26,6 +27,7 @@ namespace API.Controllers
             return Ok(users);
         }
 
+       
         [HttpGet("{username}")]  // api/users/3
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
