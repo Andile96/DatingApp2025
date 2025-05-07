@@ -18,9 +18,9 @@ export class MemberMessagesComponent {
   messageContent ="";
 
   sendMessage() {
-    this.messageService.sendMessage(this.username(), this.messageContent).then() =>{
+    this.messageService.sendMessage(this.username(), this.messageContent).then(() =>{
       this.messageForm?.resetForm();
-    }
+    })
   }
 
  
