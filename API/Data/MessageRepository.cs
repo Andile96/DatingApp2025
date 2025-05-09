@@ -96,7 +96,7 @@ namespace API.Data
             if (unreadMessages.Count != 0)
             {
                 unreadMessages.ForEach(x => x.DateRead = DateTime.UtcNow);
-                await context.SaveChangesAsync();
+                
             }
 
             return messages;
@@ -105,11 +105,6 @@ namespace API.Data
         public void RemoveConnection(Connection connection)
         {
             context.Connections.Remove(connection);
-        }
-
-        public async Task<bool> SaveAllAsync()
-        {
-            return await context.SaveChangesAsync() > 0;
         }
     }
 }
