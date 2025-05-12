@@ -1,1 +1,5 @@
-{}
+{
+    "azureAutomation.directory.basePath": "c:\\Users\\Andile",
+    "appService.defaultWebAppToDeploy": "",
+    "appService.deploySubpath": "API\\bin\\Publish"
+}
