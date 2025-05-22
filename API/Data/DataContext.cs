@@ -14,6 +14,8 @@ public class DataContext(DbContextOptions options) : IdentityDbContext<AppUser,A
     public DbSet<Message> messages {get;set;}
     public DbSet<Group> Groups { get; set; }
     public DbSet<Photo> Photos { get; set; }
+    public DbSet<Visits> Visits { get; set; }
+    
     public DbSet<Connection> Connections { get; set; }
 
 

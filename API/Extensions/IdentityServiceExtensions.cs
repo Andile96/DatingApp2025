@@ -51,7 +51,8 @@ namespace API.Extensions
 
                 services.AddAuthorizationBuilder()
                 .AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"))
-                .AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
+                .AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin", "Moderator"))
+                .AddPolicy("RequiresVIPRole", policy => policy.RequireRole("VIP"));
 
             return services;
         }
