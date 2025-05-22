@@ -28,7 +28,7 @@ export class UserManagementComponent implements OnInit {
         title: 'User roles',
         username: user.username,
         selectedRoles: [...user.roles],
-        availableRoles: ['Admin', 'Moderator','VIP', 'Member'],
+        availableRoles: ['Admin', 'Moderator', 'Member'],
         users: this.users,
         rolesUpdated: false,
       }
