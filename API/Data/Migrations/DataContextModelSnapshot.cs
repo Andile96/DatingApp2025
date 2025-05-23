@@ -291,6 +291,24 @@ namespace API.Data.Migrations
                     b.ToTable("Likes");
                 });
 
+            modelBuilder.Entity("API.Entities.Visits", b =>
+                {
+                    b.Property<int>("VisitorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VisitedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("VisitDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("VisitorId", "VisitedUserId");
+
+                    b.HasIndex("VisitedUserId");
+
+                    b.ToTable("Visits");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
@@ -454,6 +472,25 @@ namespace API.Data.Migrations
                     b.Navigation("TargetUser");
                 });
 
+            modelBuilder.Entity("API.Entities.Visits", b =>
+                {
+                    b.HasOne("API.Entities.AppUser", "VisitedUser")
+                        .WithMany("VisitorsReceived")
+                        .HasForeignKey("VisitedUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.AppUser", "Visitor")
+                        .WithMany("VisitsMade")
+                        .HasForeignKey("VisitorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("VisitedUser");
+
+                    b.Navigation("Visitor");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("API.Entities.AppRole", null)
@@ -508,6 +545,10 @@ namespace API.Data.Migrations
                     b.Navigation("Photos");
 
                     b.Navigation("UserRoles");
+
+                    b.Navigation("VisitorsReceived");
+
+                    b.Navigation("VisitsMade");
                 });
 
             modelBuilder.Entity("API.Entities.Group", b =>

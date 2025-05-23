@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace API.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class SqlInitial : Migration
+    public partial class AddedNewEntity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -259,6 +259,29 @@ namespace API.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Visits",
+                columns: table => new
+                {
+                    VisitorId = table.Column<int>(type: "int", nullable: false),
+                    VisitedUserId = table.Column<int>(type: "int", nullable: false),
+                    VisitDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Visits", x => new { x.VisitorId, x.VisitedUserId });
+                    table.ForeignKey(
+                        name: "FK_Visits_AspNetUsers_VisitedUserId",
+                        column: x => x.VisitedUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Visits_AspNetUsers_VisitorId",
+                        column: x => x.VisitorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Connections",
                 columns: table => new
                 {
@@ -339,6 +362,11 @@ namespace API.Data.Migrations
                 name: "IX_Photos_AppUserId",
                 table: "Photos",
                 column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Visits_VisitedUserId",
+                table: "Visits",
+                column: "VisitedUserId");
         }
 
         /// <inheritdoc />
@@ -370,6 +398,9 @@ namespace API.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Photos");
+
+            migrationBuilder.DropTable(
+                name: "Visits");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -4,7 +4,6 @@ namespace API.Entities;
 
 public class Visits
 {
-    public int Id { get; set; }
     public int VisitorId { get; set; }
     public int VisitedUserId { get; set; }
     public DateTime VisitDate { get; set; } = DateTime.UtcNow;

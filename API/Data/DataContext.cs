@@ -68,6 +68,22 @@ public class DataContext(DbContextOptions options) : IdentityDbContext<AppUser,A
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.Entity<Photo>().HasQueryFilter(p => p.IsApproved);
+
+        builder.Entity<Visits>()
+            .HasKey(x => new { x.VisitorId, x.VisitedUserId });
+        
+        builder.Entity<Visits>()
+            .HasOne(v => v.Visitor)
+            .WithMany(x => x.VisitsMade)
+            .HasForeignKey(x => x.VisitorId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+
+       builder.Entity<Visits>()
+            .HasOne(v => v.VisitedUser)
+            .WithMany(x => x.VisitorsReceived)
+            .HasForeignKey(x => x.VisitedUserId)
+            .OnDelete(DeleteBehavior.NoAction);
     
 
 
