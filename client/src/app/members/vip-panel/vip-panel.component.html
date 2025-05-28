@@ -1,0 +1,76 @@
+<div class="row">
+
+  <div class="text-center mt-3">
+    <h2>Profiles you visited/ They Visited your profile - {{ visitsService.paginatedResult()?.pagination?.totalItems}}</h2>
+  </div>
+  
+  <div class="container mt-3">
+    <form #form="ngForm" class="d-flex mb-3" (ngSubmit)="loadVisits()">
+      <div class="d-flex px-2">
+        <label class="col-form-label">Show: </label>
+        <select 
+          name="filterVisits" 
+          style="width: 130px;" 
+          class="form-select ms-1"
+          [(ngModel)]=" visitsService.visitParams().filter" 
+        >
+          @for (visits of filterList; track visits.value) {
+            <option [value]="visits.value">
+              {{visits.display}}
+            </option>
+          }
+        </select>
+      </div>
+  
+      <button class="btn btn-primary ms-1" type="submit">Apply Filters</button>
+      <button (click)="resetFilters()" class="btn btn-info ms-1" type="button">Reset Filters</button>
+      <div class="col">
+        <div class="btn-group float-end">
+          <button
+          type="button"
+          class="btn btn-primary"
+          name="orderBy"
+          (click)="loadVisits()"
+          btnRadio="lastActive"
+          [(ngModel)]=" visitsService.visitParams().tab"
+          >Visited Me</button>
+
+          <button
+          type="button"
+          class="btn btn-primary"
+          name="orderBy"
+          (click)="loadVisits()"
+          btnRadio="lastActive"
+          [(ngModel)]=" visitsService.visitParams().tab"
+          >Visited By Me</button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+    @for (member of  visitsService.paginatedResult()?.items; track member.id) {
+
+        <div class="col-2">
+            <app-member-card [member]="member"></app-member-card>
+        </div>
+        
+    }
+    
+</div>
+@if ( visitsService.paginatedResult()?.pagination) {
+    <div class="d-flex justify-content-center">
+      <pagination 
+        [boundaryLinks]="true" 
+        [totalItems]=" visitsService.paginatedResult()?.pagination!.totalItems"
+        [itemsPerPage]=" visitsService.paginatedResult()?.pagination!.itemsPerPage"
+        (pageChanged)="pageChanged($event)" 
+        [(ngModel)]=" visitsService.paginatedResult()?.pagination!.currentPage"
+        [maxSize]="10" 
+        previousText="&lsaquo;" 
+        nextText="&rsaquo;"
+        firstText="&laquo;" 
+        lastText="&raquo;">
+      </pagination>
+    </div>
+  }

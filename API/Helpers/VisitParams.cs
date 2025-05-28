@@ -4,7 +4,8 @@ namespace API.Helpers;
 
 public class VisitParams : PaginationParams
 {
-    public string ?CurrentUsername { get; set; }
+   
     public string Filter { get; set; } = "allVisits";
+    public string Tab { get; set; } = "visited";
 
 }

@@ -11,6 +11,7 @@ import { MessageService } from '../../_services/message.service';
 import { PresenceService } from '../../_services/presence.service';
 import { AccountService } from '../../_services/account.service';
 import { HubConnectionState } from '@microsoft/signalr';
+import { VipService } from '../../_services/vip.service';
 
 @Component({
     selector: 'app-member-detail',
@@ -27,6 +28,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   presenceService = inject(PresenceService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private visitService = inject(VipService);
   
   member: Member = {} as Member;
   images: GalleryItem[] = [];
@@ -34,15 +36,26 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
  
 
   ngOnInit(): void {
+    const currentUser = this.accountService.currentUser();
     this.route.data.subscribe({
       next: data =>{
         this.member = data['member'];
         this.member && this.member.photos.map(p=>{
           this.images.push(new ImageItem({src: p.url, thumb: p.url}))
-        })
+        });
+        
+        if (currentUser && this.member.username !== currentUser.username) {
+        this.visitService.trackVisit(this.member.id).subscribe({
+          next: () => console.log('Visit tracked'),
+          error: err => console.error('Failed to track visit', err)
+        });
       }
 
+      }
+      
+
     })
+    
     this.route.paramMap.subscribe({
       next: _=> this.onRouteParamsChange()
     })
@@ -90,3 +103,5 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.messageService.stopHubConnection();
   }
 }
+
+

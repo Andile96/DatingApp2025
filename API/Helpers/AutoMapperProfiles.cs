@@ -27,6 +27,16 @@ namespace API.Helpers
             CreateMap<DateTime, DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
             CreateMap<DateTime?, DateTime?>().ConvertUsing(d => d.HasValue
             ? DateTime.SpecifyKind(d.Value, DateTimeKind.Utc) : null);
+
+            CreateMap<Visits, VisitsDto>()
+             .ForMember(d => d.Username, opt => opt.MapFrom(s => s.Visitor.UserName))
+             .ForMember(d => d.PhotoUrl, o => o.MapFrom(s => s.Visitor.Photos.FirstOrDefault(p => p.IsMain)!.Url))
+             .ForMember(d => d.VisitedAt, opt => opt.MapFrom(s => s.VisitDate));
+
+            CreateMap<Visits, VisitsDto>()
+            .ForMember(d => d.Username, opt => opt.MapFrom(s => s.VisitedUser.UserName))
+            .ForMember(d => d.PhotoUrl, o => o.MapFrom(s => s.VisitedUser.Photos.FirstOrDefault(p => p.IsMain)!.Url))
+            .ForMember(d => d.VisitedAt, opt => opt.MapFrom(s => s.VisitDate));
             
         }
     }

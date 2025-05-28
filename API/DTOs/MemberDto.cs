@@ -19,6 +19,6 @@ public class MemberDto
         public string? Country { get; set; }
         public List<PhotoDto>? Photos { get; set; }
         
-        public List<VisitsDto>? VisitsMade { get; set; }
-        public List<VisitsDto>? VisitorsReceived { get; set; }
+       public List<VisitsDto>? VisitsMade { get; set; }
+       public List<VisitsDto>? VisitorsReceived { get; set; }
 }

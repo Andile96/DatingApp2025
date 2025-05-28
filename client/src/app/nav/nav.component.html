@@ -13,6 +13,9 @@
                 <li class="nav-item">
                     <a routerLink="/messages" routerLinkActive='active' class="nav-link">Messages</a>
                 </li>
+                <li *appHasRole="['VIP']" class="nav-item">
+                    <a routerLink="/vip-panel" routerLinkActive='active' class="nav-link">VIP</a>
+                </li>
                 <li *appHasRole="['admin','Moderator']" class="nav-item">
                     <a routerLink="/admin" routerLinkActive='active' class="nav-link">admin</a>
                 </li>

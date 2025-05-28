@@ -7,37 +7,63 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data;
- public class UsersVisitsRepository(DataContext context, IMapper mapper) : IUsersVisitsRepository
+
+public class UsersVisitsRepository(DataContext context, IMapper mapper) : IUsersVisitsRepository
+{
+
+     public async Task TrackVisitAsync(int visitorId, int visitedId)
     {
-        public async Task<PagedList<MemberDto>> GetVisitedProfilesAsync(VisitParams visitParams)
-        {
-            var query = context.Visits
-                .Where(v => v.VisitedUser.UserName == visitParams.CurrentUsername)
-                .Where(v => visitParams.Filter == "allVisits" || 
-                            (visitParams.Filter == "visitsInPastMonth" && v.VisitDate >= DateTime.UtcNow.AddMonths(-1)))
-                .OrderByDescending(v => v.VisitDate)
-                .Select(v => v.VisitedUser)
-                .AsQueryable();
+       if (visitorId == visitedId) return;
 
-            return await PagedList<MemberDto>.CreateAsync(
-                query.ProjectTo<MemberDto>(mapper.ConfigurationProvider),
-                visitParams.PageNumber,
-                visitParams.PageSize);
+        var visit = await context.Visits.FindAsync(visitorId, visitedId);
+        if (visit != null)
+        {
+            visit.VisitDate = DateTime.UtcNow;
+        }
+        else
+        {
+            context.Visits.Add(new Visits
+            {
+                VisitorId = visitorId,
+                VisitedUserId = visitedId
+            });
         }
 
-        public async Task<PagedList<MemberDto>> GetProfileVisitorsAsync(VisitParams visitParams)
-        {
-            var query = context.Visits
-                .Where(v => v.Visitor.UserName == visitParams.CurrentUsername)
-                .Where(v => visitParams.Filter == "allVisits" || 
-                            (visitParams.Filter == "visitsInPastMonth" && v.VisitDate >= DateTime.UtcNow.AddMonths(-1)))
-                .OrderByDescending(v => v.VisitDate)
-                .Select(v => v.Visitor)
-                .AsQueryable();
-
-            return await PagedList<MemberDto>.CreateAsync(
-                query.ProjectTo<MemberDto>(mapper.ConfigurationProvider),
-                visitParams.PageNumber,
-                visitParams.PageSize);
-        }
+        await context.SaveChangesAsync();
     }
+
+    public async Task<PagedList<MemberDto>> GetVisitsAsync(int currentUserId, VisitParams visitParams)
+    {
+        var query = context.Visits.AsQueryable();
+
+        if (visitParams.Tab == "visited")
+        {
+            query = query.Where(v => v.VisitorId == currentUserId);
+        }
+        else if (visitParams.Tab == "visitedBy")
+        {
+            query = query.Where(v => v.VisitorId == currentUserId);
+        }
+
+        if (visitParams.Filter == "visitsInPastMonth")
+        {
+            var pastMonth = DateTime.UtcNow.AddMonths(-1);
+            query = query.Where(v => v.VisitDate >= pastMonth);
+        }
+
+        var userId = query
+            .OrderByDescending(v => v.VisitDate)
+            .Select(v => visitParams.Tab == "visited"
+                ? v.VisitedUserId
+                : v.VisitorId)
+            .ToListAsync();
+
+        var memberQuery = context.Users
+            .Where(u => userId.Equals(u.Id))
+            .ProjectTo<MemberDto>(mapper.ConfigurationProvider);
+
+        return await PagedList<MemberDto>.CreateAsync(memberQuery, visitParams.PageNumber, visitParams.PageSize);
+    }
+
+   
+}

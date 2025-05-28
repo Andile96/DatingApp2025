@@ -6,8 +6,8 @@ namespace API.Interfaces;
 
 public interface IUsersVisitsRepository
 {
-   Task<PagedList<MemberDto>> GetVisitedProfilesAsync(VisitParams visitParams);
-   Task<PagedList<MemberDto>> GetProfileVisitorsAsync(VisitParams visitParams);
+   Task TrackVisitAsync(int visitorId, int visitedId);
+   Task<PagedList<MemberDto>> GetVisitsAsync(int currentUserId, VisitParams visitParams);
     
 
 }
